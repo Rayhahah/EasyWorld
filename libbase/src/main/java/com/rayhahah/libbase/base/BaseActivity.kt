@@ -44,7 +44,6 @@ abstract class BaseActivity : AppCompatActivity() {
         if (layoutID != 0) {
             setContentView(layoutID)
         }
-
         initView(savedInstanceState)
     }
 
@@ -55,7 +54,8 @@ abstract class BaseActivity : AppCompatActivity() {
      * 获取布局
      */
     abstract fun getContentView(): Int
-    abstract  fun initView(savedInstanceState: Bundle?)
+
+    abstract fun initView(savedInstanceState: Bundle?)
 
     protected open fun doSetTheme() {
 

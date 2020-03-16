@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rayhahah.libbase.callback;
+package com.rayhahah.easyworld.architecture.binding;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;

@@ -1,12 +1,14 @@
-package com.rayhahah.easyworld
+package com.rayhahah.libbase
 
-import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import com.rayhahah.libbase.BaseApp
+import android.animation.ObjectAnimator
+import android.animation.TimeInterpolator
+import android.animation.ValueAnimator
+import android.view.animation.LinearInterpolator
+import com.google.gson.reflect.TypeToken
+import com.rayhahah.libbase.helper.AnimHelper
+import com.rayhahah.libbase.helper.JsonHelper
 import com.rayhahah.libbase.utils.LogUtils
-import com.rayhahah.libbase.utils.PackageUtil
+
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -26,35 +28,78 @@ import com.rayhahah.libbase.utils.PackageUtil
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2018/5/13
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MyApp : BaseApp(), ViewModelStoreOwner {
 
-    //TODO tip：可借助 Application 来管理一个应用级 的 SharedViewModel，
-    // 实现全应用范围内的 生命周期安全 且 事件源可追溯的 视图控制器 事件通知。
+fun ltime(msg: Any, startTime: Long = 0, tag: String = ProjectConst.DEFAULT_TAG): Long {
+    val currentTimeMillis = System.currentTimeMillis()
+    LogUtils.dTag(tag, msg.toString() + "=${currentTimeMillis - startTime}")
+    return currentTimeMillis
+}
 
-    private var mAppViewModelStore: ViewModelStore? = null
+fun lFile(msg: Any, tag: String = ProjectConst.DEFAULT_TAG) {
+    LogUtils.file(tag, msg.toString())
+}
 
-    private var mFactory: ViewModelProvider.Factory? = null
+/**
+ * 对象转Json
+ */
+inline fun <reified T : Any> List<T>.toJsonList(): String {
+    return JsonHelper.getInstance().gson().toJson(this, T::class.java)
+}
 
-    override fun getViewModelStore(): ViewModelStore = mAppViewModelStore!!
+/**
+ * 对象转Json
+ */
+inline fun <reified T : Any> T.toJson(): String {
+    return JsonHelper.getInstance().gson().toJson(this, T::class.java)
+}
 
-    override fun onCreate() {
-        super.onCreate()
-        mAppViewModelStore = ViewModelStore()
-        LogUtils.eTag("SHA1", PackageUtil.SHA1(mAppContext))
-        InitProxy.onApplicationInit(this)
-    }
 
-    fun getAppViewModelProvider(
-        activity: Activity, factory: ViewModelProvider.Factory
-    ): ViewModelProvider {
-        return ViewModelProvider(
-            activity.applicationContext as MyApp,
-            factory
-        )
-    }
+/**
+ * Json转对象
+ */
+inline fun <reified T> String.parse(): T {
+    return JsonHelper.getInstance().gson().fromJson(this, T::class.java)
+}
 
+
+/**
+ * Json转对象
+ */
+inline fun <reified T> String.parseList(): T {
+    return JsonHelper.getInstance().gson().fromJson<T>(this, object : TypeToken<T>() {
+    }.type)
+}
+
+//fun <T, H : BaseViewHolder> BaseQuickAdapter<T, H>.autoNotify(old: List<T>, new: List<T>,
+//                                                              compareItemSame: (old: T, new: T) -> Boolean, compareContentSame: (old: T, new: T) -> Boolean) {
+//    val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+//
+//        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+//            return compareItemSame(old[oldItemPosition], new[newItemPosition])
+//        }
+//
+//        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+//            return compareContentSame(old[oldItemPosition], new[newItemPosition])
+//        }
+//
+//        override fun getOldListSize() = old.size
+//
+//        override fun getNewListSize() = new.size
+//    })
+//    this.data?.clear()
+//    this.data?.addAll(new)
+//
+//    diff.dispatchUpdatesTo(this)
+//}
+
+fun ObjectAnimator.obtainOption(
+    duration: Long,
+    timeInterpolator: TimeInterpolator = LinearInterpolator(),
+    repeatCount: Int = 0, repeatMode: Int = ValueAnimator.RESTART
+): ObjectAnimator {
+    return AnimHelper.obtainOption(this, duration, timeInterpolator, repeatCount, repeatMode)
 }

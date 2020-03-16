@@ -1,12 +1,8 @@
-package com.rayhahah.easyworld
+package com.rayhahah.libbase.delegate
 
-import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import com.rayhahah.libbase.BaseApp
-import com.rayhahah.libbase.utils.LogUtils
-import com.rayhahah.libbase.utils.PackageUtil
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import kotlin.reflect.KProperty
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -26,35 +22,32 @@ import com.rayhahah.libbase.utils.PackageUtil
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2018/6/27
  * @tips 这个类是Object的子类
- * @fuction
+ * @fuction 直接代理获取Bundle中的属性
  */
-class MyApp : BaseApp(), ViewModelStoreOwner {
+class ExtrasDelegate<out T>(private val extraName: String, private val defaultValue: T) {
 
-    //TODO tip：可借助 Application 来管理一个应用级 的 SharedViewModel，
-    // 实现全应用范围内的 生命周期安全 且 事件源可追溯的 视图控制器 事件通知。
+    private var extra: T? = null
 
-    private var mAppViewModelStore: ViewModelStore? = null
-
-    private var mFactory: ViewModelProvider.Factory? = null
-
-    override fun getViewModelStore(): ViewModelStore = mAppViewModelStore!!
-
-    override fun onCreate() {
-        super.onCreate()
-        mAppViewModelStore = ViewModelStore()
-        LogUtils.eTag("SHA1", PackageUtil.SHA1(mAppContext))
-        InitProxy.onApplicationInit(this)
+    operator fun getValue(thisRef: AppCompatActivity, property: KProperty<*>): T {
+        extra = getExtra(extra, extraName, thisRef)
+        return extra ?: defaultValue
     }
 
-    fun getAppViewModelProvider(
-        activity: Activity, factory: ViewModelProvider.Factory
-    ): ViewModelProvider {
-        return ViewModelProvider(
-            activity.applicationContext as MyApp,
-            factory
-        )
+    operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
+        extra = getExtra(extra, extraName, thisRef)
+        return extra ?: defaultValue
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> getExtra(oldExtra: T?, extraName: String, thisRef: AppCompatActivity): T? =
+            oldExtra ?: thisRef.intent?.extras?.get(extraName) as T?
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> getExtra(oldExtra: T?, extraName: String, thisRef: Fragment): T? = oldExtra ?: thisRef.arguments?.get(extraName) as T?
 }
+
+fun <T> extraDelegate(extra: String, default: T) = ExtrasDelegate(extra, default)
+
+fun extraDelegate(extra: String) = extraDelegate(extra, null)

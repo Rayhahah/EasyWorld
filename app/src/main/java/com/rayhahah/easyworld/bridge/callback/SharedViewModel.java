@@ -18,7 +18,7 @@ package com.rayhahah.easyworld.bridge.callback;
 
 import androidx.lifecycle.ViewModel;
 
-import com.rayhahah.libbase.callback.UnPeekLiveData;
+import com.rayhahah.easyworld.architecture.binding.UnPeekLiveData;
 
 import java.util.ArrayList;
 import java.util.List;

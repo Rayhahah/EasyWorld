@@ -1,12 +1,9 @@
-package com.rayhahah.easyworld
+package com.rayhahah.libbase.delegate
 
-import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
-import com.rayhahah.libbase.BaseApp
-import com.rayhahah.libbase.utils.LogUtils
-import com.rayhahah.libbase.utils.PackageUtil
+import android.annotation.SuppressLint
+import com.rayhahah.libbase.helper.SPManager
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -26,35 +23,44 @@ import com.rayhahah.libbase.utils.PackageUtil
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2018/6/27
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MyApp : BaseApp(), ViewModelStoreOwner {
 
-    //TODO tip：可借助 Application 来管理一个应用级 的 SharedViewModel，
-    // 实现全应用范围内的 生命周期安全 且 事件源可追溯的 视图控制器 事件通知。
+class PrefDelegate<T>(private val key: String, private val default: T) : ReadWriteProperty<Any?, T> {
 
-    private var mAppViewModelStore: ViewModelStore? = null
 
-    private var mFactory: ViewModelProvider.Factory? = null
-
-    override fun getViewModelStore(): ViewModelStore = mAppViewModelStore!!
-
-    override fun onCreate() {
-        super.onCreate()
-        mAppViewModelStore = ViewModelStore()
-        LogUtils.eTag("SHA1", PackageUtil.SHA1(mAppContext))
-        InitProxy.onApplicationInit(this)
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return getSharePreference(key, default)
     }
 
-    fun getAppViewModelProvider(
-        activity: Activity, factory: ViewModelProvider.Factory
-    ): ViewModelProvider {
-        return ViewModelProvider(
-            activity.applicationContext as MyApp,
-            factory
-        )
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        return putSharePreference(key, value)
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> getSharePreference(key: String, default: T): T = with(SPManager.getInstance()) {
+        val value: Any = when (default) {
+            is Long -> getLong(key, default)
+            is String -> getString(key, default)
+            is Int -> getInt(key, default)
+            is Boolean -> getBoolean(key, default)
+            is Float -> getFloat(key, default)
+            else -> throw IllegalArgumentException("This type of data can not be saved! ")
+        }
+        value as T
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private fun <T> putSharePreference(key: String, default: T) = with(SPManager.getInstance()) {
+        when (default) {
+            is Long -> putLong(key, default)
+            is String -> putString(key, default)
+            is Int -> putInt(key, default)
+            is Boolean -> putBoolean(key, default)
+            is Float -> putFloat(key, default)
+            else -> throw IllegalArgumentException("This type of data can not be saved! ")
+        }
+    }
 }

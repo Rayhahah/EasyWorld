@@ -118,7 +118,9 @@
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
-
+# ProgressManager
+ -keep class me.jessyan.progressmanager.** { *; }
+ -keep interface me.jessyan.progressmanager.** { *; }
 
 # -------------------------------data package----------------------------------------
 #-keep class com.kunminx.puremusic.data.bean.** { *; }

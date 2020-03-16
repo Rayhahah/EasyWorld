@@ -1,12 +1,9 @@
-package com.rayhahah.easyworld
+package com.rayhahah.easyworld.bridge
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
+import com.rayhahah.easyworld.bridge.state.DefaultSaveStateViewModelFactory
 import com.rayhahah.libbase.BaseApp
-import com.rayhahah.libbase.utils.LogUtils
-import com.rayhahah.libbase.utils.PackageUtil
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -30,31 +27,13 @@ import com.rayhahah.libbase.utils.PackageUtil
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MyApp : BaseApp(), ViewModelStoreOwner {
+object InjectorHelper {
 
-    //TODO tip：可借助 Application 来管理一个应用级 的 SharedViewModel，
-    // 实现全应用范围内的 生命周期安全 且 事件源可追溯的 视图控制器 事件通知。
-
-    private var mAppViewModelStore: ViewModelStore? = null
-
-    private var mFactory: ViewModelProvider.Factory? = null
-
-    override fun getViewModelStore(): ViewModelStore = mAppViewModelStore!!
-
-    override fun onCreate() {
-        super.onCreate()
-        mAppViewModelStore = ViewModelStore()
-        LogUtils.eTag("SHA1", PackageUtil.SHA1(mAppContext))
-        InitProxy.onApplicationInit(this)
+    fun provideDefaultFactory(): ViewModelProvider.AndroidViewModelFactory {
+        return ViewModelProvider.AndroidViewModelFactory(BaseApp.getAppContext())
     }
 
-    fun getAppViewModelProvider(
-        activity: Activity, factory: ViewModelProvider.Factory
-    ): ViewModelProvider {
-        return ViewModelProvider(
-            activity.applicationContext as MyApp,
-            factory
-        )
+    fun provideDefaultSaveStateFactory(activity: AppCompatActivity): DefaultSaveStateViewModelFactory {
+        return DefaultSaveStateViewModelFactory(activity)
     }
-
 }
