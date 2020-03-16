@@ -1,0 +1,119 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt"
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //--------------------------Android base----------------------------------------
+
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$config.kotlin_version"
+    api 'androidx.appcompat:appcompat:1.1.0'
+    api 'androidx.core:core-ktx:1.2.0'
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api 'com.google.android.material:material:1.1.0'
+
+    api "androidx.lifecycle:lifecycle-runtime:2.2.0"
+    api "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    //注解使用生命周期编译器
+    kapt "androidx.lifecycle:lifecycle-compiler:2.2.0"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
+
+    //包含了 viewmodel 和 livedata
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    //或者指明使用viewmodel
+    //api "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+    //或者指明使用livedata
+    //api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+    //api 'androidx.lifecycle:lifecycle-livedata-core:2.2.0'
+
+    //navigation
+    api 'androidx.navigation:navigation-fragment:2.2.1'
+    api 'androidx.navigation:navigation-ui:2.2.1'
+    //navigation 的kotlin拓展方法，可有可无
+//    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
+//    implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+
+    //viewpager2 可以禁止预加载
+    api "androidx.viewpager2:viewpager2:1.0.0"
+    //paging分页组件
+    api 'androidx.paging:paging-runtime:2.1.1'
+
+    //workmanager
+    api 'androidx.work:work-runtime:2.3.3'
+    //--------------------------Android base----------------------------------------
+
+    //--------------------------Base----------------------------------------
+    //json序列化
+    api "com.google.code.gson:gson:2.8.6"
+
+    api "com.squareup.retrofit2:retrofit:2.7.2"
+    api "com.squareup.retrofit2:converter-gson:2.7.2"
+    api 'com.squareup.okhttp3:okhttp:4.2.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    api 'com.github.bumptech.glide:glide:4.11.0'
+//    api 'jp.wasabeef:glide-transformations:4.0.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    api "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+    //轻量的屏幕适配方案
+    api 'me.jessyan:autosize:1.2.1'
+    //状态栏
+//    api "com.jaeger.statusbarutil:library:1.5.1"
+    debugApi 'com.squareup.leakcanary:leakcanary-android:2.2'
+
+    //--------------------------Base----------------------------------------
+
+
+    //--------------------------test----------------------------------------
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //--------------------------test----------------------------------------
+
+
+    //--------------------------第三方----------------------------------------
+    //速度比SP快一百倍不止！！！
+//    api 'com.tencent:mmkv:1.0.18'
+    //哆啦A梦
+//    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:1.1.2'
+//    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.2'
+//    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:1.1.2'
+    //内存泄漏检测
+    // debugImplementation because LeakCanary should only run in debug builds.
+
+    //--------------------------第三方----------------------------------------
+}

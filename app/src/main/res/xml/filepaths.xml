@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--它对应Context.getFilesDir返回的路径：eg:”/data/data/com.richard.simple/files”。-->
+    <files-path path="." name="files"/>
+
+    <!--它对应getCacheDir返回的路径：eg:“/data/data/com.richard.simple/cache”；-->
+    <!--<cache-path path="." name="cache"  />-->
+
+    <!--它对应Environment.getExternalStorageDirectory返回的路径：eg:”/storage/emulated/0”;-->
+    <external-path name="external_storage_root" path="."/>
+
+    <!--对应Context.getExternalFilesDir(String) 返回的路径。eg:”/storage/emulated/0/Android/data/com.jph.simple/files”。-->
+    <!--<external-files-path name="name" path="path" />-->
+
+</paths>
