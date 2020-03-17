@@ -1,9 +1,11 @@
 package com.rayhahah.easyworld.architecture.base
 
 import android.os.Bundle
-import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.rayhahah.easyworld.MyApp
 import com.rayhahah.easyworld.architecture.netstate.NetState
 import com.rayhahah.easyworld.architecture.netstate.NetworkStateManager
@@ -33,14 +35,21 @@ import com.rayhahah.libbase.base.BaseFragment
  * @tips 这个类是Object的子类
  * @fuction
  */
-abstract class BindingFragment : BaseFragment() {
+abstract class BindingFragment<T : ViewDataBinding> : BaseFragment() {
     protected lateinit var mSharedViewModel: SharedViewModel
+    protected var mBinding: T? = null
+    protected lateinit var mTest: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel::class.java)
         NetworkStateManager.getInstance().mNetworkStateCallback.observe(this,
             Observer<NetState> { t -> onNetStateChanged(t) })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mBinding = null
     }
 
     /**
@@ -50,15 +59,17 @@ abstract class BindingFragment : BaseFragment() {
 
     }
 
-    override fun initView(view: View, savedInstanceState: Bundle?) {
-    }
-
     protected fun getAppViewModelProvider(
         factory: ViewModelProvider.Factory = ViewModelProvider.AndroidViewModelFactory(
             BaseApp.getAppContext()
         )
     ): ViewModelProvider {
         return (mActivity.applicationContext as MyApp).getAppViewModelProvider(mActivity, factory)
+    }
+
+
+    protected fun nav(): NavController {
+        return NavHostFragment.findNavController(this)
     }
 
 }

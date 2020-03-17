@@ -1,7 +1,14 @@
-package com.rayhahah.easyworld.bridge.state
+package com.rayhahah.easyworld.ui.page
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import com.rayhahah.easyworld.R
+import com.rayhahah.easyworld.architecture.base.BindingFragment
+import com.rayhahah.easyworld.bridge.InjectorHelper
+import com.rayhahah.easyworld.bridge.state.MainFragmentViewModel
+import com.rayhahah.easyworld.databinding.FragmentMainBinding
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -25,8 +32,32 @@ import androidx.lifecycle.ViewModel
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
+class MainFragment : BindingFragment<FragmentMainBinding>() {
+    private val mMainFragViewModel: MainFragmentViewModel by viewModels {
+        InjectorHelper.provideDefaultFactory()
+    }
 
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+        mSharedViewModel.navMainData.observe(viewLifecycleOwner) { it ->
+            if (it != R.id.action_to_main_fragment) {
+                nav().navigate(it)
+            }
+        }
+    }
+
+    override fun getLayoutId(): Int = R.layout.fragment_main
+
+    override fun onCreateView(view: View): View {
+        mBinding = FragmentMainBinding.bind(view)
+        mBinding?.apply {
+            vm = mMainFragViewModel
+            click = ClickProxy()
+        }
+        return view
+    }
+
+    class ClickProxy {
+
+
+    }
 }

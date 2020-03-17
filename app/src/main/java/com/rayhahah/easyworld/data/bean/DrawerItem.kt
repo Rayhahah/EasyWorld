@@ -1,7 +1,6 @@
-package com.rayhahah.easyworld.bridge.state
+package com.rayhahah.easyworld.data.bean
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.view.View
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -21,12 +20,23 @@ import androidx.lifecycle.ViewModel
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/17
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
+data class DrawerItem(
+    val title: String,
+    val subtitle: String,
+    val type: Int,
+    val action: Int,
+    var click: (View) -> Unit = {}
+) {
+    companion object {
+        const val TYPE_MIAN = 0
+        const val TYPE_SUB = 1
+    }
 
+    fun doClick(view: View) {
+        click(view)
+    }
 }

@@ -1,7 +1,8 @@
-package com.rayhahah.easyworld.bridge.state
+package com.rayhahah.easyworld.data.repo
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.R
+import com.rayhahah.easyworld.data.bean.DrawerItem
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -21,12 +22,38 @@ import androidx.lifecycle.ViewModel
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/17
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
+object DrawerRespository {
 
+    fun getItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+        val items = arrayListOf<DrawerItem>()
+        items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.action_to_main_fragment))
+        items.add(DrawerItem("Page", "Show how page it is.", DrawerItem.TYPE_SUB, -1))
+        items.add(
+            DrawerItem(
+                "Setting",
+                "Here is some advance for App.",
+                DrawerItem.TYPE_SUB,
+                R.id.action_to_setting_fragment
+            )
+        )
+        data.value = items
+    }
+
+    fun addItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+        val value = arrayListOf<DrawerItem>()
+        value.addAll(data.value!!)
+        value.add(DrawerItem("Add ${value.size + 1}", "", DrawerItem.TYPE_MIAN, -1))
+        data.value = value
+    }
+
+    fun removeItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+        val value = arrayListOf<DrawerItem>()
+        value.addAll(data.value!!)
+        value.removeAt(value.size - 1)
+        data.value = value
+    }
 }

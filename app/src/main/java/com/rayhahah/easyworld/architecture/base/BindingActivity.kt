@@ -1,8 +1,8 @@
 package com.rayhahah.easyworld.architecture.base
 
-import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.rayhahah.easyworld.MyApp
+import com.rayhahah.easyworld.R
 import com.rayhahah.easyworld.architecture.netstate.NetworkStateManager
 import com.rayhahah.easyworld.bridge.callback.SharedViewModel
 import com.rayhahah.libbase.BaseApp
@@ -38,7 +38,7 @@ abstract class BindingActivity : BaseActivity() {
 
     override fun onInit() {
         super.onInit()
-        BarUtils.setStatusBarColor(this, Color.TRANSPARENT)
+        BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimaryDark))
         BarUtils.setStatusBarLightMode(this, true)
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel::class.java!!)
         lifecycle.addObserver(NetworkStateManager.getInstance())

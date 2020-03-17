@@ -3,7 +3,6 @@ package com.rayhahah.libbase.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.rayhahah.libbase.helper.AppManager
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -38,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         doSetTheme()
         super.onCreate(savedInstanceState)
-        AppManager.getInstance().addActivity(this)
+//        AppManager.getInstance().addActivity(this)
         onInit()
         val layoutID = getContentView()
         if (layoutID != 0) {

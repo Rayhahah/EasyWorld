@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
 import com.google.gson.reflect.TypeToken
 import com.rayhahah.libbase.helper.AnimHelper
 import com.rayhahah.libbase.helper.JsonHelper
@@ -41,6 +42,14 @@ fun ltime(msg: Any, startTime: Long = 0, tag: String = ProjectConst.DEFAULT_TAG)
 
 fun lFile(msg: Any, tag: String = ProjectConst.DEFAULT_TAG) {
     LogUtils.file(tag, msg.toString())
+}
+
+fun shortToast(str: String) {
+    Toast.makeText(BaseApp.getAppContext(), str, Toast.LENGTH_SHORT).show()
+}
+
+fun longToast(str: String) {
+    Toast.makeText(BaseApp.getAppContext(), str, Toast.LENGTH_LONG).show()
 }
 
 /**

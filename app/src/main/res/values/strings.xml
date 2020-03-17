@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EasyWorld</string>
+    <string name="drawer_bottom_text"><![CDATA[< Coding make me happly />]]></string>
 </resources>

@@ -1,8 +1,11 @@
 package com.rayhahah.easyworld
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.observe
 import com.rayhahah.easyworld.architecture.base.BindingActivity
 import com.rayhahah.easyworld.bridge.InjectorHelper
 import com.rayhahah.easyworld.bridge.state.MainActivityViewModel
@@ -18,5 +21,28 @@ class MainActivity : BindingActivity() {
         InitProxy.onHomeInit()
         mBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         mBinding.lifecycleOwner = this
+        mBinding.vm = mMainActivityViewModel
+
+        mMainActivityViewModel.openDrawer.value = true
+        mMainActivityViewModel.allowDrawerOpen.value = true
+
+        mBinding.dl.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+//                mMainActivityViewModel.openDrawer.value = false
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+//                mMainActivityViewModel.openDrawer.value = true
+            }
+        })
+        mSharedViewModel.openOrCloseDrawer.observe(this) { open: Boolean ->
+            mMainActivityViewModel.openDrawer.value = open
+        }
     }
 }

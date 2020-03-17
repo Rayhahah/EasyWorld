@@ -54,7 +54,6 @@ dependencies {
 
     api 'com.github.whataa:noDrawable:1.1.1'
 
-
     //room数据库
     api 'android.arch.persistence.room:runtime:1.1.1'
     api "androidx.room:room-runtime:2.2.4"

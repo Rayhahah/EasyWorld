@@ -1,7 +1,12 @@
-package com.rayhahah.easyworld.bridge.state
+package com.rayhahah.easyworld.ui.adapter.item
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.databinding.DataBindingUtil
+import com.chad.library.adapter.base.provider.BaseItemProvider
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.rayhahah.easyworld.R
+import com.rayhahah.easyworld.data.bean.DrawerItem
+import com.rayhahah.easyworld.databinding.ItemDrawerMainBinding
+
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -21,12 +26,26 @@ import androidx.lifecycle.ViewModel
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/17
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
+class DrawerMainItemProvider : BaseItemProvider<DrawerItem>() {
+    override val itemViewType: Int = DrawerItem.TYPE_MIAN
+    override val layoutId: Int = R.layout.item_drawer_main
 
+
+    override fun onViewHolderCreated(viewHolder: BaseViewHolder, viewType: Int) {
+        super.onViewHolderCreated(viewHolder, viewType)
+        DataBindingUtil.bind<ItemDrawerMainBinding>(viewHolder.itemView)
+    }
+
+    override fun convert(helper: BaseViewHolder, data: DrawerItem) {
+        // 获取 Binding
+        val binding = helper.getBinding<ItemDrawerMainBinding>()
+        if (binding != null) {
+            binding.item = data
+            binding.executePendingBindings()
+        }
+    }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main.xml"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.rayhahah.easyworld.ui.page.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+
+        <!--        <action-->
+        <!--            android:id="@+id/action_view_pager_fragment_to_plant_detail_fragment"-->
+        <!--            app:destination="@id/settingFragment"-->
+        <!--            app:enterAnim="@anim/slide_in_right"-->
+        <!--            app:exitAnim="@anim/slide_out_left"-->
+        <!--            app:popEnterAnim="@anim/slide_in_left"-->
+        <!--            app:popExitAnim="@anim/slide_out_right" />-->
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.rayhahah.easyworld.ui.page.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting">
+
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_to_main_fragment"
+        app:destination="@id/mainFragment"
+        app:enterAnim="@anim/trans_x_fragment_enter"
+        app:exitAnim="@anim/trans_x_fragment_exit"
+        app:popEnterAnim="@anim/trans_x_fragment_pop_enter"
+        app:popExitAnim="@anim/trans_x_fragment_pop_exit" />
+
+    <action
+        android:id="@+id/action_to_setting_fragment"
+        app:destination="@id/settingFragment"
+        app:enterAnim="@anim/trans_x_fragment_enter"
+        app:exitAnim="@anim/trans_x_fragment_exit"
+        app:popEnterAnim="@anim/trans_x_fragment_pop_enter"
+        app:popExitAnim="@anim/trans_x_fragment_pop_exit" />
+
+</navigation>

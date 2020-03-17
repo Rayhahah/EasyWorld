@@ -21,15 +21,19 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import androidx.core.view.GravityCompat;
 import androidx.databinding.BindingAdapter;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.rayhahah.libbase.BaseApp;
 import com.rayhahah.libbase.utils.ClickUtils;
 
@@ -37,9 +41,33 @@ import com.rayhahah.libbase.utils.ClickUtils;
 @SuppressWarnings("unused")
 public class AdapterBinding {
 
+    @BindingAdapter(value = {"isOpenDrawer"}, requireAll = false)
+    public static void openDrawer(DrawerLayout drawerLayout, boolean isOpenDrawer) {
+        if (isOpenDrawer && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        } else {
+            if (!isOpenDrawer) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        }
+    }
+
+    @BindingAdapter(value = {"allowDrawerOpen"}, requireAll = false)
+    public static void allowDrawerOpen(DrawerLayout drawerLayout, boolean allowDrawerOpen) {
+        drawerLayout.setDrawerLockMode(allowDrawerOpen
+                ? DrawerLayout.LOCK_MODE_UNLOCKED
+                : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+
     @BindingAdapter(value = {"imageUrl", "placeHolder"}, requireAll = false)
     public static void loadUrl(ImageView view, String url, Drawable placeHolder) {
-        Glide.with(view.getContext()).load(url).placeholder(placeHolder).into(view);
+        RequestBuilder<Drawable> builder = Glide.with(view.getContext()).load(url);
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams != null && layoutParams.width > 0 && layoutParams.height > 0) {
+            builder.override(layoutParams.width, layoutParams.height);
+        }
+        builder.placeholder(placeHolder).into(view);
     }
 
     @BindingAdapter(value = {"visible"}, requireAll = false)

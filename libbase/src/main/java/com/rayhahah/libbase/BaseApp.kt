@@ -33,11 +33,11 @@ open class BaseApp : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+        mAppContext = this
     }
 
     override fun onCreate() {
         super.onCreate()
-        mAppContext = this
         ProjectConst.DEBUG = !AppHelper.isProductionMode(mAppContext)
         initLog()
     }

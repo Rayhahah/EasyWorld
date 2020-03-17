@@ -1,6 +1,6 @@
 package com.rayhahah.easyworld.bridge.state
 
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
 /**
@@ -25,8 +25,6 @@ import androidx.lifecycle.ViewModel
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
-
+class SettingFragmentViewModel : ViewModel() {
+    val loadPage = ObservableField<String>()
 }

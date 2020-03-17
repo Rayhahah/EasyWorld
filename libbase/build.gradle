@@ -116,6 +116,11 @@ dependencies {
 
 
     //--------------------------第三方----------------------------------------
+
+
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.1'
+    //RecycleView多状态
+//    api 'com.drakeet.multitype:multitype:4.2.0'
     //速度比SP快一百倍不止！！！
 //    api 'com.tencent:mmkv:1.0.18'
     //哆啦A梦

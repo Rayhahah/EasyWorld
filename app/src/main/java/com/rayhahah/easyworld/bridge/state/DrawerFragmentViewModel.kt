@@ -2,6 +2,8 @@ package com.rayhahah.easyworld.bridge.state
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.data.bean.DrawerItem
+import com.rayhahah.easyworld.data.repo.DrawerRespository
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -25,8 +27,20 @@ import androidx.lifecycle.ViewModel
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
-    val openDrawer = MutableLiveData<Boolean>()
-    val allowDrawerOpen = MutableLiveData<Boolean>()
+class DrawerFragmentViewModel : ViewModel() {
+    val drawerItemData: MutableLiveData<ArrayList<DrawerItem>> by lazy {
+        MutableLiveData<ArrayList<DrawerItem>>()
+    }
 
+    fun getItem() {
+        DrawerRespository.getItem(drawerItemData)
+    }
+
+    fun addItem() {
+        DrawerRespository.addItem(drawerItemData)
+    }
+
+    fun removeItem() {
+        DrawerRespository.removeItem(drawerItemData)
+    }
 }
