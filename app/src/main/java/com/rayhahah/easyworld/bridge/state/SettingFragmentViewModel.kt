@@ -1,7 +1,10 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.data.bean.SettingInfo
+import com.rayhahah.easyworld.data.repo.SettingRespository
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -27,4 +30,28 @@ import androidx.lifecycle.ViewModel
  */
 class SettingFragmentViewModel : ViewModel() {
     val loadPage = ObservableField<String>()
+    //    val testStr = MutableLiveData<String>()
+    val testStr = ObservableField<SettingInfo>()
+
+    val settingInfo: MutableLiveData<SettingInfo> by lazy {
+        MutableLiveData<SettingInfo>()
+    }
+
+    fun getSettingInfo() {
+        SettingRespository.getSettingInfo(settingInfo)
+//        testStr.value = "Test First"
+        testStr.set(SettingInfo("Test Title", ""))
+
+    }
+
+    fun updateSettingInfo() {
+        SettingRespository.updateSettingInfo(settingInfo)
+//        testStr.value = "Test Update"
+//        testStr.set("Test Update")
+
+//        val info = testStr.get()
+//        info?.title = "Test Title Update"
+        testStr.set(SettingInfo("Test Title Update", ""))
+    }
+
 }

@@ -1,17 +1,4 @@
-package com.rayhahah.easyworld.architecture.base
-
-import android.os.Bundle
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.rayhahah.easyworld.MyApp
-import com.rayhahah.easyworld.architecture.netstate.NetState
-import com.rayhahah.easyworld.architecture.netstate.NetworkStateManager
-import com.rayhahah.easyworld.bridge.callback.SharedViewModel
-import com.rayhahah.libbase.BaseApp
-import com.rayhahah.libbase.base.BaseFragment
+package com.rayhahah.easyworld.data.bean
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -31,44 +18,11 @@ import com.rayhahah.libbase.base.BaseFragment
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/18
  * @tips 这个类是Object的子类
  * @fuction
  */
-abstract class BindingFragment<T : ViewDataBinding> : BaseFragment() {
-    protected lateinit var mSharedViewModel: SharedViewModel
-    protected var mBinding: T? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mSharedViewModel = getAppViewModelProvider().get(SharedViewModel::class.java)
-        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this,
-            Observer<NetState> { t -> onNetStateChanged(t) })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mBinding = null
-    }
-
-    /**
-     * 全局网络状态回调
-     */
-    protected open fun onNetStateChanged(netState: NetState): Unit {
-
-    }
-
-    protected fun getAppViewModelProvider(
-        factory: ViewModelProvider.Factory = ViewModelProvider.AndroidViewModelFactory(
-            BaseApp.getAppContext()
-        )
-    ): ViewModelProvider {
-        return (mActivity.applicationContext as MyApp).getAppViewModelProvider(mActivity, factory)
-    }
-
-
-    protected fun nav(): NavController {
-        return NavHostFragment.findNavController(this)
-    }
-
-}
+data class SettingInfo(
+    var title: String,
+    var subtitle: String
+)

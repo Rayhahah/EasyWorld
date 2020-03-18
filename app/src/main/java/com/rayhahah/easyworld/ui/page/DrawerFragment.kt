@@ -49,6 +49,7 @@ class DrawerFragment : BindingFragment<FragmentDrawerBinding>() {
         mBinding?.apply {
             vm = mDrawerViewModel
             click = ClickProxy()
+            lifecycleOwner=viewLifecycleOwner
         }
         return view
     }

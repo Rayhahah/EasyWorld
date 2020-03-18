@@ -54,6 +54,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>() {
         mBinding?.apply {
             vm = mMainFragViewModel
             click = ClickProxy()
+            lifecycleOwner = viewLifecycleOwner
         }
         return view
     }

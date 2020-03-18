@@ -103,9 +103,6 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
             ft.show(frag);
         }
         ft.setPrimaryNavigationFragment(frag);
-//        ft.replace(mContainerId, frag);
-//        ft.setPrimaryNavigationFragment(frag);
-
 
         final @IdRes int destId = destination.getId();
         ArrayDeque<Integer> mBackStack = reflectBackStack();
@@ -151,20 +148,6 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
         } else {
             return null;
         }
-    }
-
-    private boolean reflectPendingBackStackOperation() {
-        Field field;
-        try {
-            field = FragmentNavigator.class.getDeclaredField("mIsPendingBackStackOperation");
-            field.setAccessible(true);
-            return (boolean) field.get(this);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private ArrayDeque<Integer> reflectBackStack() {

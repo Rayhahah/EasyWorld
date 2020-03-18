@@ -1,17 +1,7 @@
-package com.rayhahah.easyworld.architecture.base
+package com.rayhahah.easyworld.data.repo
 
-import android.os.Bundle
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.rayhahah.easyworld.MyApp
-import com.rayhahah.easyworld.architecture.netstate.NetState
-import com.rayhahah.easyworld.architecture.netstate.NetworkStateManager
-import com.rayhahah.easyworld.bridge.callback.SharedViewModel
-import com.rayhahah.libbase.BaseApp
-import com.rayhahah.libbase.base.BaseFragment
+import androidx.lifecycle.MutableLiveData
+import com.rayhahah.easyworld.data.bean.SettingInfo
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -31,44 +21,20 @@ import com.rayhahah.libbase.base.BaseFragment
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/17
  * @tips 这个类是Object的子类
  * @fuction
  */
-abstract class BindingFragment<T : ViewDataBinding> : BaseFragment() {
-    protected lateinit var mSharedViewModel: SharedViewModel
-    protected var mBinding: T? = null
+object SettingRespository {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mSharedViewModel = getAppViewModelProvider().get(SharedViewModel::class.java)
-        NetworkStateManager.getInstance().mNetworkStateCallback.observe(this,
-            Observer<NetState> { t -> onNetStateChanged(t) })
+    fun getSettingInfo(data: MutableLiveData<SettingInfo>) {
+        data.value = SettingInfo("First title", "First Subtitle")
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mBinding = null
+    fun updateSettingInfo(data: MutableLiveData<SettingInfo>) {
+//        data.value = SettingInfo("Second title", "Second Subtitle")
+        data.value?.title = "Second title"
+        data.value?.subtitle = "Second Subtitle"
+        data.value = data.value
     }
-
-    /**
-     * 全局网络状态回调
-     */
-    protected open fun onNetStateChanged(netState: NetState): Unit {
-
-    }
-
-    protected fun getAppViewModelProvider(
-        factory: ViewModelProvider.Factory = ViewModelProvider.AndroidViewModelFactory(
-            BaseApp.getAppContext()
-        )
-    ): ViewModelProvider {
-        return (mActivity.applicationContext as MyApp).getAppViewModelProvider(mActivity, factory)
-    }
-
-
-    protected fun nav(): NavController {
-        return NavHostFragment.findNavController(this)
-    }
-
 }

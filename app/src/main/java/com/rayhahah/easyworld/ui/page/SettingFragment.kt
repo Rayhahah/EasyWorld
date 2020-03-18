@@ -45,27 +45,38 @@ class SettingFragment : BindingFragment<FragmentSettingBinding>() {
                 nav().navigate(it)
             }
         }
+
+        mSettingFragViewModel.settingInfo.observe(viewLifecycleOwner) {
+            LogUtils.eTag("SettingFragment", it.toString())
+        }
+
+//        mSettingFragViewModel.testStr.observe(viewLifecycleOwner) {
+//            LogUtils.eTag("SettingFragment", it.toString())
+//        }
+        mSettingFragViewModel.getSettingInfo()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_setting
 
     override fun onCreateView(view: View): View {
-        LogUtils.dTag("BindingFragment"," SettingFragment onCreateView")
+        LogUtils.dTag("BindingFragment", " SettingFragment onCreateView")
         mBinding = FragmentSettingBinding.bind(view)
         mBinding?.apply {
             vm = mSettingFragViewModel
             click = ClickProxy()
+            lifecycleOwner=viewLifecycleOwner
         }
         return view
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        LogUtils.dTag("BindingFragment"," SettingFragment onDestroyView")
+        LogUtils.dTag("BindingFragment", " SettingFragment onDestroyView")
     }
 
-    class ClickProxy {
-
-
+    inner class ClickProxy {
+        fun updateClick() {
+            mSettingFragViewModel.updateSettingInfo()
+        }
     }
 }
