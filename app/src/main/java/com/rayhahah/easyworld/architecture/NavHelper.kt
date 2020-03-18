@@ -1,15 +1,10 @@
-package com.rayhahah.easyworld.ui.page
+package com.rayhahah.easyworld.architecture
 
-import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import com.rayhahah.easyworld.R
-import com.rayhahah.easyworld.architecture.base.BindingFragment
-import com.rayhahah.easyworld.bridge.InjectorHelper
-import com.rayhahah.easyworld.bridge.state.SettingFragmentViewModel
-import com.rayhahah.easyworld.databinding.FragmentSettingBinding
-import com.rayhahah.libbase.utils.LogUtils
+import androidx.annotation.IdRes
+import androidx.annotation.NavigationRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
+import com.rayhahah.easyworld.architecture.base.KeepStateFragmentNavigator
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -29,43 +24,25 @@ import com.rayhahah.libbase.utils.LogUtils
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/16
+ * @time 2020/3/18
  * @tips 这个类是Object的子类
  * @fuction
  */
-class SettingFragment : BindingFragment<FragmentSettingBinding>() {
+object NavHelper {
 
-    private val mSettingFragViewModel: SettingFragmentViewModel by viewModels {
-        InjectorHelper.provideDefaultFactory()
+    fun initKeepStateNavigator(
+        activity: AppCompatActivity,
+        @IdRes navId: Int,
+        @NavigationRes navRes: Int
+    ) {
+        val fragmentHost = activity.supportFragmentManager.findFragmentById(navId)
+        val navController = Navigation.findNavController(activity, navId)
+        navController.navigatorProvider.addNavigator(
+            KeepStateFragmentNavigator(
+                activity, activity.supportFragmentManager, fragmentHost?.id ?: 0
+            )
+        )
+        navController.setGraph(navRes)
     }
 
-    override fun initView(view: View, savedInstanceState: Bundle?) {
-        mSharedViewModel.navMainData.observe(viewLifecycleOwner) { it ->
-            if (it != R.id.settingFragment) {
-                nav().navigate(it)
-            }
-        }
-    }
-
-    override fun getLayoutId(): Int = R.layout.fragment_setting
-
-    override fun onCreateView(view: View): View {
-        LogUtils.dTag("BindingFragment"," SettingFragment onCreateView")
-        mBinding = FragmentSettingBinding.bind(view)
-        mBinding?.apply {
-            vm = mSettingFragViewModel
-            click = ClickProxy()
-        }
-        return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        LogUtils.dTag("BindingFragment"," SettingFragment onDestroyView")
-    }
-
-    class ClickProxy {
-
-
-    }
 }

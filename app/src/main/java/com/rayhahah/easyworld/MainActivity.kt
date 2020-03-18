@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.observe
+import com.rayhahah.easyworld.architecture.NavHelper
 import com.rayhahah.easyworld.architecture.base.BindingActivity
 import com.rayhahah.easyworld.bridge.InjectorHelper
 import com.rayhahah.easyworld.bridge.state.MainActivityViewModel
@@ -23,6 +24,8 @@ class MainActivity : BindingActivity() {
         mBinding.lifecycleOwner = this
         mBinding.vm = mMainActivityViewModel
 
+        NavHelper.initKeepStateNavigator(this, R.id.main_fragment_host, R.navigation.nav_main)
+
         mMainActivityViewModel.openDrawer.value = true
         mMainActivityViewModel.allowDrawerOpen.value = true
 
@@ -34,11 +37,9 @@ class MainActivity : BindingActivity() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
-//                mMainActivityViewModel.openDrawer.value = false
             }
 
             override fun onDrawerOpened(drawerView: View) {
-//                mMainActivityViewModel.openDrawer.value = true
             }
         })
         mSharedViewModel.openOrCloseDrawer.observe(this) { open: Boolean ->

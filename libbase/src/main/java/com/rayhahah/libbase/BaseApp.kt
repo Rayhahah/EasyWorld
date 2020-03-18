@@ -38,7 +38,8 @@ open class BaseApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ProjectConst.DEBUG = !AppHelper.isProductionMode(mAppContext)
+        ProjectConst.DEBUG = AppHelper.isDebug()
+//        Log.d("debug", "debug = ${ProjectConst.DEBUG}")
         initLog()
     }
 
@@ -48,6 +49,7 @@ open class BaseApp : Application() {
             .setGlobalTag(ProjectConst.DEFAULT_TAG)
             .setLogSwitch(ProjectConst.DEBUG)
             .setBorderSwitch(false)
+            .setLogHeadSwitch(true)
             .setConsoleSwitch(ProjectConst.DEBUG)
             .setLog2FileSwitch(false)
             .setStackDeep(1)

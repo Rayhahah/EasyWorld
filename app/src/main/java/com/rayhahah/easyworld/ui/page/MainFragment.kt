@@ -9,6 +9,7 @@ import com.rayhahah.easyworld.architecture.base.BindingFragment
 import com.rayhahah.easyworld.bridge.InjectorHelper
 import com.rayhahah.easyworld.bridge.state.MainFragmentViewModel
 import com.rayhahah.easyworld.databinding.FragmentMainBinding
+import com.rayhahah.libbase.utils.LogUtils
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -39,7 +40,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>() {
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
         mSharedViewModel.navMainData.observe(viewLifecycleOwner) { it ->
-            if (it != R.id.action_to_main_fragment) {
+            if (it != R.id.mainFragment) {
                 nav().navigate(it)
             }
         }
@@ -48,12 +49,18 @@ class MainFragment : BindingFragment<FragmentMainBinding>() {
     override fun getLayoutId(): Int = R.layout.fragment_main
 
     override fun onCreateView(view: View): View {
+        LogUtils.dTag("BindingFragment", " MainFragment onCreateView")
         mBinding = FragmentMainBinding.bind(view)
         mBinding?.apply {
             vm = mMainFragViewModel
             click = ClickProxy()
         }
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        LogUtils.dTag("BindingFragment", " MainFragment onDestroyView")
     }
 
     class ClickProxy {

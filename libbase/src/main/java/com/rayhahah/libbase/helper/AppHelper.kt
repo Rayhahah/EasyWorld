@@ -10,6 +10,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.text.TextUtils
 import com.rayhahah.libbase.BaseConst
+import com.rayhahah.libbase.BuildConfig
 import com.rayhahah.libbase.ProjectConst
 import com.rayhahah.libbase.utils.LogUtils
 import com.rayhahah.libbase.utils.Machine
@@ -189,6 +190,10 @@ object AppHelper {
         }
 
         return result
+    }
+
+    fun isDebug(): Boolean {
+        return BuildConfig.DEBUG
     }
 
     fun isProductionMode(context: Context): Boolean {

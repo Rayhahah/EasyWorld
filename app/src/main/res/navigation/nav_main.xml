@@ -5,7 +5,7 @@
     android:id="@+id/nav_main.xml"
     app:startDestination="@id/mainFragment">
 
-    <fragment
+    <keepstatefragment
         android:id="@+id/mainFragment"
         android:name="com.rayhahah.easyworld.ui.page.MainFragment"
         android:label="fragment_main"
@@ -19,16 +19,13 @@
         <!--            app:popEnterAnim="@anim/slide_in_left"-->
         <!--            app:popExitAnim="@anim/slide_out_right" />-->
 
-    </fragment>
+    </keepstatefragment>
 
-    <fragment
+    <keepstatefragment
         android:id="@+id/settingFragment"
         android:name="com.rayhahah.easyworld.ui.page.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting">
-
-
-    </fragment>
+        tools:layout="@layout/fragment_setting"></keepstatefragment>
 
     <action
         android:id="@+id/action_to_main_fragment"

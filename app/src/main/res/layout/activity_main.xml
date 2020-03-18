@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_main" />
+                 />
 
             <fragment
                 android:id="@+id/drawer_fragment_host"

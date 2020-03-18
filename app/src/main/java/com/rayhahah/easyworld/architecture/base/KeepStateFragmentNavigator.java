@@ -46,7 +46,7 @@ import java.util.Map;
 @Navigator.Name("keepstatefragment")
 public class KeepStateFragmentNavigator extends FragmentNavigator {
 
-    private static final String TAG = "KeepStateFragmentNavigator";
+    private static final String TAG = "KeepFragmentNavigator";
     private final Context mContext;
     private final FragmentManager mManager;
     private final int mContainerId;
@@ -71,11 +71,8 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
         if (className.charAt(0) == '.') {
             className = mContext.getPackageName() + className;
         }
-//        final Fragment frag = instantiateFragment(mContext, mManager,
-//                className, args);
-//        frag.setArguments(args);
-        final FragmentTransaction ft = mManager.beginTransaction();
 
+        final FragmentTransaction ft = mManager.beginTransaction();
         int enterAnim = navOptions != null ? navOptions.getEnterAnim() : -1;
         int exitAnim = navOptions != null ? navOptions.getExitAnim() : -1;
         int popEnterAnim = navOptions != null ? navOptions.getPopEnterAnim() : -1;
@@ -87,8 +84,6 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
             popExitAnim = popExitAnim != -1 ? popExitAnim : 0;
             ft.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
         }
-
-//        ft.replace(mContainerId, frag);
 
         Fragment fragment = mManager.getPrimaryNavigationFragment();
         if (fragment != null) {
@@ -103,15 +98,16 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
         if (frag == null) {
             frag = instantiateFragment(mContext, mManager, className, args);
             frag.setArguments(args);
-            ft.add(mContainerId, frag);
+            ft.add(mContainerId, frag, tag);
         } else {
             ft.show(frag);
         }
         ft.setPrimaryNavigationFragment(frag);
+//        ft.replace(mContainerId, frag);
+//        ft.setPrimaryNavigationFragment(frag);
+
 
         final @IdRes int destId = destination.getId();
-
-        Field field = null;
         ArrayDeque<Integer> mBackStack = reflectBackStack();
 
         final boolean initialNavigation = mBackStack.isEmpty();
@@ -121,7 +117,6 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
                 && mBackStack.peekLast() == destId;
 
         boolean isAdded;
-        boolean mIsPendingBackStackOperation = reflectPendingBackStackOperation();
         if (initialNavigation) {
             isAdded = true;
         } else if (isSingleTopReplacement) {
@@ -135,12 +130,10 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
                         generateBackStackName(mBackStack.size(), mBackStack.peekLast()),
                         FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 ft.addToBackStack(generateBackStackName(mBackStack.size(), destId));
-                mIsPendingBackStackOperation = true;
             }
             isAdded = false;
         } else {
             ft.addToBackStack(generateBackStackName(mBackStack.size() + 1, destId));
-            mIsPendingBackStackOperation = true;
             isAdded = true;
         }
         if (navigatorExtras instanceof Extras) {
@@ -190,5 +183,11 @@ public class KeepStateFragmentNavigator extends FragmentNavigator {
 
     private String generateBackStackName(int backStackIndex, int destId) {
         return backStackIndex + "-" + destId;
+    }
+
+    @Nullable
+    @Override
+    public Bundle onSaveState() {
+        return super.onSaveState();
     }
 }

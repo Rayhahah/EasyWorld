@@ -30,14 +30,14 @@ object DrawerRespository {
 
     fun getItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
         val items = arrayListOf<DrawerItem>()
-        items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.action_to_main_fragment))
+        items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.mainFragment))
         items.add(DrawerItem("Page", "Show how page it is.", DrawerItem.TYPE_SUB, -1))
         items.add(
             DrawerItem(
                 "Setting",
                 "Here is some advance for App.",
                 DrawerItem.TYPE_SUB,
-                R.id.action_to_setting_fragment
+                R.id.settingFragment
             )
         )
         data.value = items

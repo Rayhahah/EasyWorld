@@ -17,10 +17,23 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        config {
+            storeFile file('../study.jks')
+            storePassword 'iwantandroid'
+            keyAlias "study"
+            keyPassword 'iwantandroid'
+            v2SigningEnabled false
+        }
+    }
     buildTypes {
         release {
+            buildConfigField("boolean", "isRelease", "true")
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 
