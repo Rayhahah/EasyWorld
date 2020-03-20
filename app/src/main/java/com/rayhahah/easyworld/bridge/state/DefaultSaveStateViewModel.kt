@@ -1,7 +1,7 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.architecture.base.BaseViewModel
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -27,5 +27,5 @@ import androidx.lifecycle.ViewModel
  */
 class DefaultSaveStateViewModel internal constructor(
     private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : BaseViewModel() {
 }

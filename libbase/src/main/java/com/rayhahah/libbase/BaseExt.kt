@@ -83,6 +83,14 @@ inline fun <reified T> String.parseList(): T {
     }.type)
 }
 
+fun ObjectAnimator.obtainOption(
+    duration: Long,
+    timeInterpolator: TimeInterpolator = LinearInterpolator(),
+    repeatCount: Int = 0, repeatMode: Int = ValueAnimator.RESTART
+): ObjectAnimator {
+    return AnimHelper.obtainOption(this, duration, timeInterpolator, repeatCount, repeatMode)
+}
+
 //fun <T, H : BaseViewHolder> BaseQuickAdapter<T, H>.autoNotify(old: List<T>, new: List<T>,
 //                                                              compareItemSame: (old: T, new: T) -> Boolean, compareContentSame: (old: T, new: T) -> Boolean) {
 //    val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -104,11 +112,3 @@ inline fun <reified T> String.parseList(): T {
 //
 //    diff.dispatchUpdatesTo(this)
 //}
-
-fun ObjectAnimator.obtainOption(
-    duration: Long,
-    timeInterpolator: TimeInterpolator = LinearInterpolator(),
-    repeatCount: Int = 0, repeatMode: Int = ValueAnimator.RESTART
-): ObjectAnimator {
-    return AnimHelper.obtainOption(this, duration, timeInterpolator, repeatCount, repeatMode)
-}

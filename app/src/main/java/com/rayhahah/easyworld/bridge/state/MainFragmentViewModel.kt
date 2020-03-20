@@ -1,7 +1,7 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.architecture.base.BaseViewModel
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -25,6 +25,6 @@ import androidx.lifecycle.ViewModel
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainFragmentViewModel : ViewModel() {
+class MainFragmentViewModel : BaseViewModel() {
     val loadPage = ObservableField<String>()
 }

@@ -2,7 +2,7 @@ package com.rayhahah.easyworld.bridge.state
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.architecture.base.BaseViewModel
 import com.rayhahah.easyworld.data.bean.SettingInfo
 import com.rayhahah.easyworld.data.repo.SettingRespository
 
@@ -28,7 +28,7 @@ import com.rayhahah.easyworld.data.repo.SettingRespository
  * @tips 这个类是Object的子类
  * @fuction
  */
-class SettingFragmentViewModel : ViewModel() {
+class SettingFragmentViewModel : BaseViewModel() {
     val loadPage = ObservableField<String>()
     //    val testStr = MutableLiveData<String>()
     val testStr = ObservableField<SettingInfo>()

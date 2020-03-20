@@ -1,7 +1,7 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.architecture.base.BaseViewModel
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModel
  * @tips 这个类是Object的子类
  * @fuction
  */
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel : BaseViewModel() {
     val openDrawer = MutableLiveData<Boolean>()
     val allowDrawerOpen = MutableLiveData<Boolean>()
 

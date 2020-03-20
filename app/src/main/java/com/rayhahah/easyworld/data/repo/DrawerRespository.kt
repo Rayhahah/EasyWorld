@@ -28,7 +28,7 @@ import com.rayhahah.easyworld.data.bean.DrawerItem
  */
 object DrawerRespository {
 
-    fun getItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+    suspend fun getItem(): ArrayList<DrawerItem> {
         val items = arrayListOf<DrawerItem>()
         items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.mainFragment))
         items.add(DrawerItem("Page", "Show how page it is.", DrawerItem.TYPE_SUB, -1))
@@ -40,20 +40,31 @@ object DrawerRespository {
                 R.id.settingFragment
             )
         )
-        data.value = items
+        return items
     }
 
-    fun addItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+    suspend fun addItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
         val value = arrayListOf<DrawerItem>()
         value.addAll(data.value!!)
-        value.add(DrawerItem("Add ${value.size + 1}", "", DrawerItem.TYPE_MIAN, -1))
-        data.value = value
+        if (value.size % 2 == 1) {
+            value.add(DrawerItem("Add ${value.size + 1}", "", DrawerItem.TYPE_MIAN, -1))
+        } else {
+            value.add(
+                DrawerItem(
+                    "Add ${value.size + 1}",
+                    "Add ${value.size + 1}  Description",
+                    DrawerItem.TYPE_SUB,
+                    -1
+                )
+            )
+        }
+        return value
     }
 
-    fun removeItem(data: MutableLiveData<ArrayList<DrawerItem>>) {
+    suspend fun removeItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
         val value = arrayListOf<DrawerItem>()
         value.addAll(data.value!!)
         value.removeAt(value.size - 1)
-        data.value = value
+        return value
     }
 }

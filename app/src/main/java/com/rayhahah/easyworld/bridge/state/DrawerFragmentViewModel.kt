@@ -1,9 +1,11 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.rayhahah.easyworld.architecture.base.BaseViewModel
 import com.rayhahah.easyworld.data.bean.DrawerItem
 import com.rayhahah.easyworld.data.repo.DrawerRespository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -27,20 +29,32 @@ import com.rayhahah.easyworld.data.repo.DrawerRespository
  * @tips 这个类是Object的子类
  * @fuction
  */
-class DrawerFragmentViewModel : ViewModel() {
+class DrawerFragmentViewModel : BaseViewModel() {
     val drawerItemData: MutableLiveData<ArrayList<DrawerItem>> by lazy {
         MutableLiveData<ArrayList<DrawerItem>>()
     }
 
     fun getItem() {
-        DrawerRespository.getItem(drawerItemData)
+        launch {
+            drawerItemData.value = withContext(Dispatchers.IO) {
+                DrawerRespository.getItem()
+            }
+        }
     }
 
     fun addItem() {
-        DrawerRespository.addItem(drawerItemData)
+        launch {
+            drawerItemData.value = withContext(Dispatchers.IO) {
+                DrawerRespository.addItem(drawerItemData)
+            }
+        }
     }
 
     fun removeItem() {
-        DrawerRespository.removeItem(drawerItemData)
+        launch {
+            drawerItemData.value = withContext(Dispatchers.IO) {
+                DrawerRespository.removeItem(drawerItemData)
+            }
+        }
     }
 }

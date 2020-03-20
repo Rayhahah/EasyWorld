@@ -3,7 +3,7 @@ package com.rayhahah.easyworld.ui.page
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
+import androidx.lifecycle.Observer
 import com.rayhahah.easyworld.R
 import com.rayhahah.easyworld.architecture.base.BindingFragment
 import com.rayhahah.easyworld.bridge.InjectorHelper
@@ -49,7 +49,7 @@ class DrawerFragment : BindingFragment<FragmentDrawerBinding>() {
         mBinding?.apply {
             vm = mDrawerViewModel
             click = ClickProxy()
-            lifecycleOwner=viewLifecycleOwner
+            lifecycleOwner = viewLifecycleOwner
         }
         return view
     }
@@ -57,7 +57,7 @@ class DrawerFragment : BindingFragment<FragmentDrawerBinding>() {
     override fun initView(view: View, savedInstanceState: Bundle?) {
         mBinding?.apply {
             drawerAdapter = DrawerAdapter.init(rv)
-            mDrawerViewModel.drawerItemData.observe(viewLifecycleOwner) { it: ArrayList<DrawerItem> ->
+            mDrawerViewModel.drawerItemData.observe(viewLifecycleOwner, Observer {
                 for (item in it) {
                     item.click = { view ->
                         shortToast(item.title)
@@ -65,12 +65,11 @@ class DrawerFragment : BindingFragment<FragmentDrawerBinding>() {
                     }
                 }
                 drawerAdapter.setDiffNewData(it)
-//            drawerAdapter.setNewData(it)
-//            drawerAdapter.notifyDataSetChanged()
-            }
+            })
             mDrawerViewModel.getItem()
         }
     }
+
 
     private fun onClickEvent(item: DrawerItem) {
         if (item.action != -1) {

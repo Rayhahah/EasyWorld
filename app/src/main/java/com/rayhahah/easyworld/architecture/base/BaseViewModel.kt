@@ -1,12 +1,11 @@
-package com.rayhahah.easyworld.ui.adapter
+package com.rayhahah.easyworld.architecture.base
 
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseProviderMultiAdapter
-import com.rayhahah.easyworld.data.bean.DrawerItem
-import com.rayhahah.easyworld.ui.adapter.item.DrawerMainItemProvider
-import com.rayhahah.easyworld.ui.adapter.item.DrawerSubItemProvider
-
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -26,52 +25,57 @@ import com.rayhahah.easyworld.ui.adapter.item.DrawerSubItemProvider
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/17
+ * @time 2020/3/20
  * @tips 这个类是Object的子类
  * @fuction
  */
-class DrawerAdapter : BaseProviderMultiAdapter<DrawerItem>() {
-    companion object {
-        fun init(recyclerView: RecyclerView): DrawerAdapter {
-            val adapter = DrawerAdapter()
-            recyclerView.adapter = adapter
-            adapter.setDiffCallback(DiffCallback())
-            return adapter
+open class BaseViewModel : ViewModel() {
+    fun launch(tryBlock: suspend CoroutineScope.() -> Unit) {
+        viewModelScope.launch {
+            tryCatch(tryBlock, {}, {}, true)
         }
     }
 
-    /**
-     * 自行根据数据、位置等内容，返回 item 类型
-     */
-    init {
-        addItemProvider(DrawerMainItemProvider())
-        addItemProvider(DrawerSubItemProvider())
+    fun launchOnUITryCatch(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
+        finallyBlock: suspend CoroutineScope.() -> Unit,
+        handleCancellationExceptionManually: Boolean
+    ) {
+        viewModelScope.launch {
+            tryCatch(tryBlock, catchBlock, finallyBlock, handleCancellationExceptionManually)
+        }
     }
 
-    override fun getItemType(data: List<DrawerItem>, position: Int): Int {
-        return data[position].type
+    fun launchOnUITryCatch(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        handleCancellationExceptionManually: Boolean = false
+    ) {
+        viewModelScope.launch {
+            tryCatch(tryBlock, {}, {}, handleCancellationExceptionManually)
+        }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<DrawerItem>() {
-        override fun areItemsTheSame(oldItem: DrawerItem, newItem: DrawerItem): Boolean {
-            return oldItem.title == newItem.title
-        }
 
-        override fun areContentsTheSame(oldItem: DrawerItem, newItem: DrawerItem): Boolean {
-            return oldItem.title == newItem.title
-                    && oldItem.type == newItem.type
-                    && oldItem.subtitle == newItem.subtitle
-        }
-
-        /**
-         * 可选实现
-         * 如果需要精确修改某一个view中的内容，请实现此方法。
-         * 如果不实现此方法，或者返回null，将会直接刷新整个item。
-         *
-         * @return Payload info. if return null, the entire item will be refreshed.
-         */
-        override fun getChangePayload(oldItem: DrawerItem, newItem: DrawerItem): Any? {
-            return null
+    private suspend fun tryCatch(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
+        finallyBlock: suspend CoroutineScope.() -> Unit,
+        handleCancellationExceptionManually: Boolean = false
+    ) {
+        coroutineScope {
+            try {
+                tryBlock()
+            } catch (e: Exception) {
+                if (e !is CancellationException || handleCancellationExceptionManually) {
+//                    mException.value = e
+                    catchBlock(e)
+                } else {
+                    throw e
+                }
+            } finally {
+                finallyBlock()
+            }
         }
     }
 }
