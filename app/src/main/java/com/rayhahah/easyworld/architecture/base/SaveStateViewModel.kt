@@ -1,7 +1,6 @@
-package com.rayhahah.easyworld.data.repo
+package com.rayhahah.easyworld.architecture.base
 
-import androidx.lifecycle.MutableLiveData
-import com.rayhahah.easyworld.data.bean.SettingInfo
+import androidx.lifecycle.SavedStateHandle
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -21,20 +20,10 @@ import com.rayhahah.easyworld.data.bean.SettingInfo
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2020/3/17
+ * @time 2020/3/20
  * @tips 这个类是Object的子类
  * @fuction
  */
-object SettingRespository {
-
-    fun getSettingInfo(data: MutableLiveData<SettingInfo>) {
-        data.value = SettingInfo("First title", "First Subtitle")
-    }
-
-    fun updateSettingInfo(data: MutableLiveData<SettingInfo>) {
-//        data.value = SettingInfo("Second title", "Second Subtitle")
-        data.value?.title = "Second title"
-        data.value?.subtitle = "Second Subtitle"
-        data.value = data.value
-    }
-}
+open class SaveStateViewModel(
+    protected val savedStateHandle: SavedStateHandle
+) : BaseViewModel()

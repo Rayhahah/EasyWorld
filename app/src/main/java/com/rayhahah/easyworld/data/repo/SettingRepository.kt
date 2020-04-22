@@ -1,8 +1,7 @@
 package com.rayhahah.easyworld.data.repo
 
 import androidx.lifecycle.MutableLiveData
-import com.rayhahah.easyworld.R
-import com.rayhahah.easyworld.data.bean.DrawerItem
+import com.rayhahah.easyworld.data.bean.SettingInfo
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -26,45 +25,16 @@ import com.rayhahah.easyworld.data.bean.DrawerItem
  * @tips 这个类是Object的子类
  * @fuction
  */
-object DrawerRespository {
+object SettingRepository {
 
-    suspend fun getItem(): ArrayList<DrawerItem> {
-        val items = arrayListOf<DrawerItem>()
-        items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.mainFragment))
-        items.add(DrawerItem("Page", "Show how page it is.", DrawerItem.TYPE_SUB, -1))
-        items.add(
-            DrawerItem(
-                "Setting",
-                "Here is some advance for App.",
-                DrawerItem.TYPE_SUB,
-                R.id.settingFragment
-            )
-        )
-        return items
+    fun getSettingInfo(data: MutableLiveData<SettingInfo>) {
+        data.value = SettingInfo("First title", "First Subtitle")
     }
 
-    suspend fun addItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
-        val value = arrayListOf<DrawerItem>()
-        value.addAll(data.value!!)
-        if (value.size % 2 == 1) {
-            value.add(DrawerItem("Add ${value.size + 1}", "", DrawerItem.TYPE_MIAN, -1))
-        } else {
-            value.add(
-                DrawerItem(
-                    "Add ${value.size + 1}",
-                    "Add ${value.size + 1}  Description",
-                    DrawerItem.TYPE_SUB,
-                    -1
-                )
-            )
-        }
-        return value
-    }
-
-    suspend fun removeItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
-        val value = arrayListOf<DrawerItem>()
-        value.addAll(data.value!!)
-        value.removeAt(value.size - 1)
-        return value
+    fun updateSettingInfo(data: MutableLiveData<SettingInfo>) {
+//        data.value = SettingInfo("Second title", "Second Subtitle")
+        data.value?.title = "Second title"
+        data.value?.subtitle = "Second Subtitle"
+        data.value = data.value
     }
 }

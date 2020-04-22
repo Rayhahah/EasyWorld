@@ -1,8 +1,8 @@
-package com.rayhahah.libbase
+package com.rayhahah.easyworld.data.repo
 
-import com.rayhahah.libbase.utils.FileUtils
-import com.rayhahah.libbase.utils.LogUtils
-import java.io.File
+import androidx.lifecycle.MutableLiveData
+import com.rayhahah.easyworld.R
+import com.rayhahah.easyworld.data.bean.DrawerItem
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -22,46 +22,49 @@ import java.io.File
  *
  * @author Rayhahah
  * @blog http://rayhahah.com
- * @time 2018/5/13
+ * @time 2020/3/17
  * @tips 这个类是Object的子类
  * @fuction
  */
-object ProjectConst {
+object DrawerRepository {
 
-    const val PRODUCT_NAME = "EasyWorld"
-    const val PACKAGE: String = "com.rayhahah.easyworld"
-
-    var DEBUG: Boolean = false
-    var TAG_TYPE: Int = LogUtils.D
-    const val DEFAULT_TAG: String = "EasyWorld"
-
-    //SP表名
-    const val TABLE_PREFS = "EasyWorld"
-
-    /**
-     * 正式环境
-     */
-    const val HOST = ""
-
-    /**
-     * 各种临时测试配置，上线前检查，以防错漏
-     */
-    object Test {
-
+    suspend fun getItem(): ArrayList<DrawerItem> {
+        val items = arrayListOf<DrawerItem>()
+        items.add(DrawerItem("Home", "", DrawerItem.TYPE_MIAN, R.id.mainFragment))
+        items.add(DrawerItem("Page", "Show how page it is.", DrawerItem.TYPE_SUB, -1))
+        items.add(
+            DrawerItem(
+                "Setting",
+                "Here is some advance for App.",
+                DrawerItem.TYPE_SUB,
+                R.id.settingFragment
+            )
+        )
+        return items
     }
 
-    object Dir {
-        /**
-         * Tips
-         * FileUtils.rootFilePath  =   /data/data
-         * filesDir                =   /data/data/com.learn.test/files
-         * cacheDir                =   /data/data/com.learn.test/cache
-         * externalCacheDir        =   /storage/emulated/0/Android/data/com.learn.test/cache
-         * getExternalFilesDir     =    /storage/emulated/0/Android/data/com.learn.test/files
-         */
+    suspend fun addItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
+        val value = arrayListOf<DrawerItem>()
+        value.addAll(data.value!!)
+        if (value.size % 2 == 1) {
+            value.add(DrawerItem("Add ${value.size + 1}", "", DrawerItem.TYPE_MIAN, -1))
+        } else {
+            value.add(
+                DrawerItem(
+                    "Add ${value.size + 1}",
+                    "Add ${value.size + 1}  Description",
+                    DrawerItem.TYPE_SUB,
+                    -1
+                )
+            )
+        }
+        return value
+    }
 
-        var VIDEO_DIR = FileUtils.rootFilePath + "${PRODUCT_NAME}/video"
-        var LOG_DIR =
-            BaseApp.mAppContext.filesDir.absolutePath + File.separator + "${PRODUCT_NAME}/log"
+    suspend fun removeItem(data: MutableLiveData<ArrayList<DrawerItem>>): ArrayList<DrawerItem> {
+        val value = arrayListOf<DrawerItem>()
+        value.addAll(data.value!!)
+        value.removeAt(value.size - 1)
+        return value
     }
 }

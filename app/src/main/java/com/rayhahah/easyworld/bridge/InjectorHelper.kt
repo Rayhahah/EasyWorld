@@ -1,6 +1,6 @@
 package com.rayhahah.easyworld.bridge
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.rayhahah.easyworld.bridge.state.DefaultSaveStateViewModelFactory
 import com.rayhahah.libbase.BaseApp
@@ -33,7 +33,7 @@ object InjectorHelper {
         return ViewModelProvider.AndroidViewModelFactory(BaseApp.getAppContext())
     }
 
-    fun provideDefaultSaveStateFactory(activity: AppCompatActivity): DefaultSaveStateViewModelFactory {
+    fun provideDefaultSaveStateFactory(activity: FragmentActivity): DefaultSaveStateViewModelFactory {
         return DefaultSaveStateViewModelFactory(activity)
     }
 }

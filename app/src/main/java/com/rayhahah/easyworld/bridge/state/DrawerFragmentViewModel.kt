@@ -1,9 +1,10 @@
 package com.rayhahah.easyworld.bridge.state
 
 import androidx.lifecycle.MutableLiveData
-import com.rayhahah.easyworld.architecture.base.BaseViewModel
+import androidx.lifecycle.SavedStateHandle
+import com.rayhahah.easyworld.architecture.base.SaveStateViewModel
 import com.rayhahah.easyworld.data.bean.DrawerItem
-import com.rayhahah.easyworld.data.repo.DrawerRespository
+import com.rayhahah.easyworld.data.repo.DrawerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -29,7 +30,7 @@ import kotlinx.coroutines.withContext
  * @tips 这个类是Object的子类
  * @fuction
  */
-class DrawerFragmentViewModel : BaseViewModel() {
+class DrawerFragmentViewModel(handle: SavedStateHandle) : SaveStateViewModel(handle) {
     val drawerItemData: MutableLiveData<ArrayList<DrawerItem>> by lazy {
         MutableLiveData<ArrayList<DrawerItem>>()
     }
@@ -37,7 +38,7 @@ class DrawerFragmentViewModel : BaseViewModel() {
     fun getItem() {
         launch {
             drawerItemData.value = withContext(Dispatchers.IO) {
-                DrawerRespository.getItem()
+                DrawerRepository.getItem()
             }
         }
     }
@@ -45,7 +46,7 @@ class DrawerFragmentViewModel : BaseViewModel() {
     fun addItem() {
         launch {
             drawerItemData.value = withContext(Dispatchers.IO) {
-                DrawerRespository.addItem(drawerItemData)
+                DrawerRepository.addItem(drawerItemData)
             }
         }
     }
@@ -53,7 +54,7 @@ class DrawerFragmentViewModel : BaseViewModel() {
     fun removeItem() {
         launch {
             drawerItemData.value = withContext(Dispatchers.IO) {
-                DrawerRespository.removeItem(drawerItemData)
+                DrawerRepository.removeItem(drawerItemData)
             }
         }
     }

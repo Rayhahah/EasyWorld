@@ -8,6 +8,7 @@ import com.rayhahah.easyworld.R
 import com.rayhahah.easyworld.architecture.base.BindingFragment
 import com.rayhahah.easyworld.bridge.InjectorHelper
 import com.rayhahah.easyworld.bridge.state.DrawerFragmentViewModel
+import com.rayhahah.easyworld.bridge.state.MainFragmentViewModel
 import com.rayhahah.easyworld.data.bean.DrawerItem
 import com.rayhahah.easyworld.databinding.FragmentDrawerBinding
 import com.rayhahah.easyworld.ui.adapter.DrawerAdapter
@@ -39,9 +40,14 @@ class DrawerFragment : BindingFragment<FragmentDrawerBinding>() {
     private lateinit var drawerAdapter: DrawerAdapter
 
     private val mDrawerViewModel: DrawerFragmentViewModel by viewModels {
-        InjectorHelper.provideDefaultFactory()
+        //        InjectorHelper.provideDefaultFactory()
+        InjectorHelper.provideDefaultSaveStateFactory(requireActivity())
     }
 
+    private val mMainFragmentViewModel: MainFragmentViewModel by viewModels(
+        { requireParentFragment() },
+        { InjectorHelper.provideDefaultSaveStateFactory(requireActivity()) }
+    )
     override fun getLayoutId(): Int = R.layout.fragment_drawer
 
     override fun onCreateView(view: View): View {

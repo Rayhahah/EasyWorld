@@ -4,7 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.rayhahah.easyworld.architecture.base.BaseViewModel
 import com.rayhahah.easyworld.data.bean.SettingInfo
-import com.rayhahah.easyworld.data.repo.SettingRespository
+import com.rayhahah.easyworld.data.repo.SettingRepository
 
 /**
  * ┌───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┬───┐ ┌───┬───┬───┐
@@ -38,14 +38,13 @@ class SettingFragmentViewModel : BaseViewModel() {
     }
 
     fun getSettingInfo() {
-        SettingRespository.getSettingInfo(settingInfo)
+        SettingRepository.getSettingInfo(settingInfo)
 //        testStr.value = "Test First"
         testStr.set(SettingInfo("Test Title", ""))
-
     }
 
     fun updateSettingInfo() {
-        SettingRespository.updateSettingInfo(settingInfo)
+        SettingRepository.updateSettingInfo(settingInfo)
 //        testStr.value = "Test Update"
 //        testStr.set("Test Update")
 

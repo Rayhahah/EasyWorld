@@ -35,6 +35,6 @@ class DefaultSaveStateViewModelFactory(
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {
-        return DefaultSaveStateViewModel(handle) as T
+        return modelClass.getConstructor(SavedStateHandle::class.java).newInstance(handle)
     }
 }
